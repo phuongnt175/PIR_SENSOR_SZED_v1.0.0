@@ -66,7 +66,7 @@ static void SEND_FillBufferGlobalCommand(EmberAfClusterId clusterID,
  */
 void SEND_ReportInfoHc(void)
 {
-	uint8_t modelID[13] = {12, 'S', 'W', '2','_','L','M','1','_','T','M','P','1'};
+	uint8_t modelID[9] = {8,'L','M','1','_','P','I','R','1'};
 	uint8_t manufactureID[5] = {4, 'L', 'u', 'm', 'i'};
 	uint8_t version = 1;
 
@@ -77,7 +77,7 @@ void SEND_ReportInfoHc(void)
 								 ZCL_MODEL_IDENTIFIER_ATTRIBUTE_ID,
 								 ZCL_READ_ATTRIBUTES_RESPONSE_COMMAND_ID,
 								 modelID,
-								 13,
+								 9,
 								 ZCL_CHAR_STRING_ATTRIBUTE_TYPE);
 	SEND_SendCommandUnicast(SOURCE_ENDPOINT_PRIMARY,
 							DESTINATTION_ENDPOINT,
