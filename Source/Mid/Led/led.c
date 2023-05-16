@@ -52,7 +52,7 @@ void ledInit(void)
 	ledEventControl[LED2] =(EmberEventControl *) &led2ToggleEventControl;
 }
 
-void turnOffRGBLed(ledNumber index)
+void turnOffRGBLed(ledNumber_e index)
 {
 	for(int j=0;j<LED_RGB_ELEMENT;j++)
 	{
@@ -60,7 +60,7 @@ void turnOffRGBLed(ledNumber index)
 	}
 }
 
-void turnOnLed(ledNumber index, ledColor_e color)
+void turnOnLed(ledNumber_e index, ledColor_e color)
 {
 	for(int j=0;j<LED_RGB_ELEMENT;j++)
 	{
@@ -80,7 +80,7 @@ void turnOnLed(ledNumber index, ledColor_e color)
  * @param   None
  * @retval  None
  */
-void toggleLed(ledNumber ledIndex, ledColor_e color, uint8_t toggleTime, uint32_t onTimeMs, uint32_t offTimeMs)
+void toggleLed(ledNumber_e ledIndex, ledColor_e color, uint8_t toggleTime, uint32_t onTimeMs, uint32_t offTimeMs)
 {
 	ledAction[ledIndex].ledBlinkMode = LED_TOGGLE;
 	ledAction[ledIndex].color = color;
@@ -97,7 +97,7 @@ void toggleLed(ledNumber ledIndex, ledColor_e color, uint8_t toggleTime, uint32_
  * @param   None
  * @retval  None
  */
-void toggleLedHandle(ledNumber ledIndex)
+void toggleLedHandle(ledNumber_e ledIndex)
 {
 	if(ledAction[ledIndex].blinkTime !=0)
 	{

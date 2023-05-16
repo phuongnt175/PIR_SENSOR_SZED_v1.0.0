@@ -47,7 +47,7 @@
 typedef enum{
 	LED1,
 	LED2
-}ledNumber;
+}ledNumber_e;
 typedef enum
 {
 	ledOff 				= 0x000,
@@ -74,9 +74,9 @@ enum{
 
 /* Function prototypes -----------------------------------------------*/
 void ledInit(void);
-void turnOffRGBLed(ledNumber index);
-void toggleLedHandle(ledNumber ledIndex);
-void toggleLed(ledNumber ledIndex, ledColor_e color, uint8_t toggleTime, uint32_t onTimeMs, uint32_t offTimeMs);
-void turnOnLed(ledNumber index, ledColor_e color);
+void turnOffRGBLed(ledNumber_e index);
+void toggleLedHandle(ledNumber_e ledIndex);
+void toggleLed(ledNumber_e ledIndex, ledColor_e color, uint8_t toggleTime, uint32_t onTimeMs, uint32_t offTimeMs);
+void turnOnLed(ledNumber_e index, ledColor_e color);
 
 #endif /* SOURCE_MID_LED_LED_H_ */
