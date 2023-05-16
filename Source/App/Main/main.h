@@ -16,7 +16,7 @@ typedef enum{
 	REPORT_STATE,
 	IDLE_STATE,
 	REBOOT_STATE
-}systemState;
+}systemState_e;
 
 
 #endif /* SOURCE_APP_MAIN_MAIN_H_ */

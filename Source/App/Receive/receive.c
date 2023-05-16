@@ -75,12 +75,12 @@ bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd)
 			case EMBER_INCOMING_UNICAST:
 				if(localEndpoint == 1)
 				{
-				turnOffRBGLed(LED1);
+				turnOffRGBLed(LED1);
 				SEND_OnOffStateReport(localEndpoint, LED_OFF);
 				}
 				if(localEndpoint == 2)
 				{
-					turnOffRBGLed(LED2);
+					turnOffRGBLed(LED2);
 					SEND_OnOffStateReport(localEndpoint, LED_OFF);
 				}
 				break;

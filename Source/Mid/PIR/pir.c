@@ -53,7 +53,7 @@ void PIR_Enable(boolean enable)
 
 void PIR_INTSignalHandle(uint8_t pin)
 {
-	emberAfCorePrintln("PIR_INTSIgnalHandle");
+	emberAfCorePrintln("PIR_INTSignalHandle");
 	status = true;
 	if(pin != PIR_PIN)
 	{

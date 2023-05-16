@@ -74,7 +74,7 @@ enum{
 
 /* Function prototypes -----------------------------------------------*/
 void ledInit(void);
-void turnOffRBGLed(ledNumber index);
+void turnOffRGBLed(ledNumber index);
 void toggleLedHandle(ledNumber ledIndex);
 void toggleLed(ledNumber ledIndex, ledColor_e color, uint8_t toggleTime, uint32_t onTimeMs, uint32_t offTimeMs);
 void turnOnLed(ledNumber index, ledColor_e color);

@@ -46,13 +46,13 @@ void ledInit(void)
 							gpioModePushPull,0);
 		}
 	}
-	turnOffRBGLed(LED1);
-	turnOffRBGLed(LED2);
+	turnOffRGBLed(LED1);
+	turnOffRGBLed(LED2);
 	ledEventControl[LED1] =(EmberEventControl *) &led1ToggleEventControl;
 	ledEventControl[LED2] =(EmberEventControl *) &led2ToggleEventControl;
 }
 
-void turnOffRBGLed(ledNumber index)
+void turnOffRGBLed(ledNumber index)
 {
 	for(int j=0;j<LED_RGB_ELEMENT;j++)
 	{
