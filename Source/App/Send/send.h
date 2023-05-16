@@ -12,7 +12,7 @@
 #define SOURCE_ENDPOINT_PRIMARY					1
 #define DESTINATTION_ENDPOINT					1
 #define HC_NETWORK_ADDRESS						0x0000
- #define ZDO_MESSAGE_OVERHEAD 					1
+#define ZDO_MESSAGE_OVERHEAD 					1
 
 
 void SEND_SendCommandUnicast(uint8_t source,
