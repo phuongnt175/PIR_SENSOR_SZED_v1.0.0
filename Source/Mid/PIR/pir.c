@@ -21,6 +21,12 @@ bool status = false;
 void PIR_INTSignalHandle(uint8_t pin);
 bool isMotionSignal(void);
 
+/**
+ * @func		PIR_Init
+ * @brief		PIR init
+ * @param		pirControl
+ * @retval		None
+ */
 void PIR_Init(pirControl PirHandler)
 {
 	CMU_ClockEnable(cmuClock_GPIO, true);
@@ -31,6 +37,12 @@ void PIR_Init(pirControl PirHandler)
 	PirCallbackFunc = PirHandler;
 }
 
+/**
+ * @func		PIR_Enable
+ * @brief		PIR Enable
+ * @param		boolean
+ * @retval		None
+ */
 void PIR_Enable(boolean enable)
 {
 	if(enable){
@@ -42,7 +54,12 @@ void PIR_Enable(boolean enable)
 	}
 }
 
-
+/**
+ * @func		PIR_INTSignalHandle
+ * @brief		PIR Int handle
+ * @param		uint8_t
+ * @retval		None
+ */
 void PIR_INTSignalHandle(uint8_t pin)
 {
 	emberAfCorePrintln("PIR_INTSignalHandle");
@@ -59,6 +76,12 @@ void PIR_INTSignalHandle(uint8_t pin)
 	}
 }
 
+/**
+ * @func		pirDetectEventHandler
+ * @brief		PIR detect event handler
+ * @param		None
+ * @retval		None
+ */
 void pirDetectEventHandler(void)
 {
 	emberEventControlSetInactive(pirDetectEventControl);
@@ -101,6 +124,12 @@ void pirDetectEventHandler(void)
 	}
 }
 
+/**
+ * @func		isMotionSignal
+ * @brief		MotionSignal
+ * @param		None
+ * @retval		isMotion
+ */
 bool isMotionSignal(void)
 {
 	bool isMotion;

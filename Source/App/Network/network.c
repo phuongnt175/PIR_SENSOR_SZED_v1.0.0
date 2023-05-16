@@ -14,11 +14,8 @@ networkEventHandler networkEventHandle = NULL;
 
 /*
  * @function 			: Network_Init
- *
  * @brief				: Handle event network.
- *
  * @parameter			: networkEventHandler
- *
  * @return value		: None
  */
 void Network_Init(networkEventHandler networkResult)
@@ -28,11 +25,8 @@ void Network_Init(networkEventHandler networkResult)
 
 /*
  * @function 			: NETWORK_FindAndJoin
- *
  * @brief				: Find network
- *
  * @parameter			: None
- *
  * @return value		: None
  */
 void NETWORK_FindAndJoin(void)
@@ -46,11 +40,8 @@ void NETWORK_FindAndJoin(void)
 
 /*
  * @function 			: NETWORK_StopFindAndJoin
- *
  * @brief				: Stop find network
- *
  * @parameter			: None
- *
  * @return value		: None
  */
 void NETWORK_StopFindAndJoin(void)
@@ -61,11 +52,8 @@ void NETWORK_StopFindAndJoin(void)
 
 /*
  * @function 			: joinNetworkEventHandler
- *
  * @brief				: Handle Event Join network
- *
  * @parameter			: None
- *
  * @return value		: None
  */
 void joinNetworkEventHandler(void)
@@ -82,11 +70,8 @@ void joinNetworkEventHandler(void)
 
 /*
  * @function 			: emberAfStackStatusCallback
- *
  * @brief				: Stack Status
- *
  * @parameter			: EmberStatus
- *
  * @return value		: True or false
  */
 boolean emberAfStackStatusCallback(EmberStatus status){

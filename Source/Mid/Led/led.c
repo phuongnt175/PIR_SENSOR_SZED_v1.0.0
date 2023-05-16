@@ -51,6 +51,12 @@ void ledInit(void)
 	ledEventControl[LED2] =(EmberEventControl *) &led2ToggleEventControl;
 }
 
+/**
+ * @func    turnOffRGBLed
+ * @brief   turn off RGB led
+ * @param   ledNumber_e
+ * @retval  None
+ */
 void turnOffRGBLed(ledNumber_e index)
 {
 	for(int j=0;j<LED_RGB_ELEMENT;j++){
@@ -58,6 +64,12 @@ void turnOffRGBLed(ledNumber_e index)
 	}
 }
 
+/**
+ * @func    turnOnLed
+ * @brief   turn on led with option color
+ * @param   ledNumber_e, ledColor_e
+ * @retval  None
+ */
 void turnOnLed(ledNumber_e index, ledColor_e color)
 {
 	for(int j=0;j<LED_RGB_ELEMENT;j++){
@@ -75,7 +87,7 @@ void turnOnLed(ledNumber_e index, ledColor_e color)
 /**
  * @func    toggleLed
  * @brief   toggled LED
- * @param   None
+ * @param   ledNumber_e, ledColor_e, uint8_t, uint32_t
  * @retval  None
  */
 void toggleLed(ledNumber_e ledIndex, ledColor_e color, uint8_t toggleTime, uint32_t onTimeMs, uint32_t offTimeMs)
@@ -92,7 +104,7 @@ void toggleLed(ledNumber_e ledIndex, ledColor_e color, uint8_t toggleTime, uint3
 /**
  * @func    toggleLedHandle
  * @brief   Event Led Handler
- * @param   None
+ * @param   ledNumber_e
  * @retval  None
  */
 void toggleLedHandle(ledNumber_e ledIndex)
