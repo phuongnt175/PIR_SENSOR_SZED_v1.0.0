@@ -73,43 +73,39 @@ void pirDetectEventHandler(void)
 {
 	emberEventControlSetInactive(pirDetectEventControl);
 
-	switch(pirState)
-	{
-	case PIR_STATE_DEBOUNCE:
-		if(isMotionSignal())
-		{
-			emberAfCorePrintln("PIR_DeTECT_MOTION");
-			pirState = PIR_STATE_WAIT_5S;
-			if(PirCallbackFunc != NULL)
-			{
-				PirCallbackFunc(PIR_MOTION);
+	switch(pirState){
+		case PIR_STATE_DEBOUNCE:
+			if(isMotionSignal()){
+				emberAfCorePrintln("PIR_DeTECT_MOTION");
+				pirState = PIR_STATE_WAIT_5S;
+				if(PirCallbackFunc != NULL){
+					PirCallbackFunc(PIR_MOTION);
+				}
+				emberEventControlSetDelayMS(pirDetectEventControl,5000);
+			}else {
+				PIR_Enable(true);
 			}
-			emberEventControlSetDelayMS(pirDetectEventControl,5000);
-		}
-		else
-		{
-			PIR_Enable(true);
-		}
-		break;
-	case PIR_STATE_WAIT_5S:
-		{
-			status = false;
-			pirState = PIR_STATE_WAIT_30S;
-			PIR_Enable(true);
-			emberEventControlSetDelayMS(pirDetectEventControl, 30000);
-		}
-	break;
-	case PIR_STATE_WAIT_30S:
-		{
-			if(PirCallbackFunc != NULL)
+			break;
+
+		case PIR_STATE_WAIT_5S:
 			{
-				emberAfCorePrintln("PIR_DETECT_UNMOTION");
-				PirCallbackFunc(PIR_UNMOTION);
+				status = false;
+				pirState = PIR_STATE_WAIT_30S;
+				PIR_Enable(true);
+				emberEventControlSetDelayMS(pirDetectEventControl, 30000);
 			}
-		}
-		break;
-	default:
-		break;
+			break;
+		case PIR_STATE_WAIT_30S:
+			{
+				if(PirCallbackFunc != NULL){
+					emberAfCorePrintln("PIR_DETECT_UNMOTION");
+					PirCallbackFunc(PIR_UNMOTION);
+				}
+			}
+			break;
+
+		default:
+			break;
 	}
 }
 

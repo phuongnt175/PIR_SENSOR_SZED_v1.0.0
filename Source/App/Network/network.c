@@ -89,51 +89,38 @@ void joinNetworkEventHandler(void)
  *
  * @return value		: True or false
  */
-boolean emberAfStackStatusCallback(EmberStatus status)
-{
+boolean emberAfStackStatusCallback(EmberStatus status){
 	emberAfCorePrintln("emberAfStackStatusCallback\n");
-
-	if(status == EMBER_NETWORK_UP)
-	{
-		if(timeFindAndJoin>0)// vao mang thanh cong
-		{
+	if(status == EMBER_NETWORK_UP){
+		if(timeFindAndJoin>0){ // vao mang thanh cong
 			NETWORK_StopFindAndJoin();
-			if(networkEventHandle != NULL)
-			{
+			if(networkEventHandle != NULL){
 				networkEventHandle(NETWORK_JOIN_SUCCESS);
 				emberAfCorePrintln("NETWORK_JOIN_SUCCESS");
 			}
-		}else
-		{
-			if(networkEventHandle != NULL)
-			{
+		}else {
+			if(networkEventHandle != NULL){
 				networkEventHandle(NETWORK_HAS_PARENT);
 				emberAfCorePrintln("NETWORK_HAS_PARENT");
 			}
 		}
-
-	}
-	else
-	{
+	}else {
 		EmberNetworkStatus nwkStatusCurrent = emberAfNetworkState();
-		if(nwkStatusCurrent == EMBER_NO_NETWORK)
-		{
-			if(networkEventHandle != NULL)
-			{
+		if(nwkStatusCurrent == EMBER_NO_NETWORK){
+			if(networkEventHandle != NULL){
 				networkEventHandle(NETWORK_OUT_NETWORK);
 				emberAfCorePrintln("NETWORK_OUT_NETWORK");
 			}
-		}
-		else if(nwkStatusCurrent == EMBER_JOINED_NETWORK_NO_PARENT){
+		}else if(nwkStatusCurrent == EMBER_JOINED_NETWORK_NO_PARENT){
 			emberAfCorePrintln("NETWORK_LOST_PARENT");
 			networkEventHandle(NETWORK_LOST_PARENT);
 		}
 	}
-	if(status == EMBER_JOIN_FAILED)
-	{
+	if(status == EMBER_JOIN_FAILED){
 		emberAfCorePrintln("NETWORK_JOIN_FAIL");
 		networkEventHandle(NETWORK_JOIN_FAIL);
 	}
+
 	return false;
 }
 
