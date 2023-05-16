@@ -62,14 +62,15 @@ void Main_PIREventHandler(uint8_t pirAction)
 {
 	static boolean sendFlag = true;
 	switch (pirAction) {
+
 		case PIR_MOTION:
-			if(sendFlag)
-			{
+			if(sendFlag){
 				sendFlag = false;
 				SEND_PIRStateReport(2,PIR_MOTION);
 			}
 			toggleLed(LED1,ledPink,1,150,150);
 			break;
+
 		case PIR_UNMOTION:
 			sendFlag = true;
 			toggleLed(LED1,ledRed,1,150,150);
@@ -87,21 +88,24 @@ void mainStateEventHandler(void)
 	emberEventControlSetInactive(mainStateEventControl);
 	EmberNetworkStatus nwkStatusCurrent;
 	switch (systemState) {
+
 		case POWER_ON_STATE:
 			nwkStatusCurrent = emberAfNetworkState();
-			if(nwkStatusCurrent == EMBER_NO_NETWORK)
-			{
+			if(nwkStatusCurrent == EMBER_NO_NETWORK){
 				toggleLed(LED1,ledRed,3,200,200);
 				NETWORK_FindAndJoin();
 			}
 			systemState = IDLE_STATE;
 			break;
+
 		case REPORT_STATE:
 			systemState = IDLE_STATE;
 			SEND_ReportInfoHc();
 			break;
+
 		case IDLE_STATE:
 			break;
+
 		case REBOOT_STATE:
 			systemState = IDLE_STATE;
 			EmberNetworkStatus networkStatus = emberAfNetworkState();
@@ -113,6 +117,7 @@ void mainStateEventHandler(void)
 				halReboot();
 			}
 			break;
+
 		default:
 			break;
 	}
@@ -122,6 +127,7 @@ void Main_networkEventHandler(uint8_t networkResult)
 {
 	emberAfCorePrintln("Network Event Handle");
 	switch (networkResult) {
+
 		case NETWORK_HAS_PARENT:
 			emberAfCorePrintln("Network has parent");
 			toggleLed(LED1,ledPink,3,300,300);
@@ -129,11 +135,13 @@ void Main_networkEventHandler(uint8_t networkResult)
 			systemState = REPORT_STATE;
 			emberEventControlSetDelayMS(mainStateEventControl, 1000);
 			break;
+
 		case NETWORK_JOIN_FAIL:
 			systemState = IDLE_STATE;
 			emberAfCorePrintln("Network Join Fail");
 			emberEventControlSetDelayMS(mainStateEventControl, 1000);
 			break;
+
 		case NETWORK_JOIN_SUCCESS:
 			emberAfCorePrintln("Network Join Success");
 			toggleLed(LED1,ledPink,3,300,300);
@@ -141,21 +149,23 @@ void Main_networkEventHandler(uint8_t networkResult)
 			systemState = REPORT_STATE;
 			emberEventControlSetDelayMS(mainStateEventControl, 1000);
 			break;
+
 		case NETWORK_LOST_PARENT:
 			emberAfCorePrintln("Network lost parent");
 			toggleLed(LED1,ledPink,3,300,300);
 			systemState = IDLE_STATE;
 			emberEventControlSetDelayMS(mainStateEventControl, 1000);
 			break;
+
 		case NETWORK_OUT_NETWORK:
-			if(boNetworkReady)
-			{
+			if(boNetworkReady){
 				emberAfCorePrintln("Network Out network");
 				toggleLed(LED1,ledPink,3,300,300);
 				systemState = REBOOT_STATE;
 				emberEventControlSetDelayMS(mainStateEventControl, 3000);
 			}
 			break;
+
 		default:
 			break;
 	}

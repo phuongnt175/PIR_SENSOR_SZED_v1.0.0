@@ -18,20 +18,22 @@
  */
 boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd)
 {
-	if(cmd->clusterSpecific)
-	{
+	if(cmd->clusterSpecific){
 		switch(cmd->apsFrame->clusterId)
 		{
 			case ZCL_ON_OFF_CLUSTER_ID:
 				RECEIVE_HandleOnOffCluster(cmd);
 				break;
+
 			case ZCL_LEVEL_CONTROL_CLUSTER_ID:
 //				RECEIVE_HandleLevelControlCluster(cmd);
 				break;
+
 			default:
 				break;
 		}
 	}
+
 	return false;
 }
 
@@ -44,10 +46,10 @@ boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd)
  */
 boolean emberAfPreMessageReceivedCallback(EmberAfIncomingMessage* incommingMessage)
 {
-	if(incommingMessage->apsFrame->clusterId == ACTIVE_ENDPOINTS_RESPONSE)
-	{
+	if(incommingMessage->apsFrame->clusterId == ACTIVE_ENDPOINTS_RESPONSE){
 		return true;
 	}
+
  return false;
 }
 
@@ -68,59 +70,64 @@ bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd)
 	emberAfCorePrintln("RECEIVE_HandleOnOffCluster SourceEndpoint = %d, RemoteEndpoint = %d, commandID = %d, nodeID %2X\n",remoteEndpoint,localEndpoint,commandID,IgnoreNodeID);
 	switch(commandID)
 	{
-	case ZCL_OFF_COMMAND_ID:
-		emberAfCorePrintln("Turn off LED");
+		case ZCL_OFF_COMMAND_ID:
+			emberAfCorePrintln("Turn off LED");
 
-		switch (cmd->type) {
-			case EMBER_INCOMING_UNICAST:
-				if(localEndpoint == 1)
-				{
-				turnOffRGBLed(LED1);
-				SEND_OnOffStateReport(localEndpoint, LED_OFF);
-				}
-				if(localEndpoint == 2)
-				{
-					turnOffRGBLed(LED2);
+			switch (cmd->type) {
+
+				case EMBER_INCOMING_UNICAST:
+					if(localEndpoint == 1)
+					{
+					turnOffRGBLed(LED1);
 					SEND_OnOffStateReport(localEndpoint, LED_OFF);
-				}
-				break;
-			case EMBER_INCOMING_MULTICAST:
-				emberAfCorePrintln("Multicast");
-				turnOnLed(LED1, ledOff);
-				turnOnLed(LED2, ledOff);
-				break;
-			default:
-				break;
-		}
+					}
+					if(localEndpoint == 2)
+					{
+						turnOffRGBLed(LED2);
+						SEND_OnOffStateReport(localEndpoint, LED_OFF);
+					}
+					break;
 
-		break;
-	case ZCL_ON_COMMAND_ID:
+				case EMBER_INCOMING_MULTICAST:
+					emberAfCorePrintln("Multicast");
+					turnOnLed(LED1, ledOff);
+					turnOnLed(LED2, ledOff);
+					break;
 
-		emberAfCorePrintln("Turn on LED");
-		switch (cmd->type) {
-			case EMBER_INCOMING_UNICAST:
-				if(localEndpoint == 1)
-				{
-					turnOnLed(LED1, ledBlue);
-					SEND_OnOffStateReport(localEndpoint, LED_ON);
-				}
-				if(localEndpoint == 2)
-				{
-					turnOnLed(LED2, ledBlue);
-					SEND_OnOffStateReport(localEndpoint, LED_ON);
-				}
-				break;
-			case EMBER_INCOMING_MULTICAST:
-				emberAfCorePrintln("Multicast");
-				turnOnLed(LED2, ledGreen);
-				break;
-			default:
-				break;
+				default:
+					break;
+			}
+			break;
+
+		case ZCL_ON_COMMAND_ID:
+
+			emberAfCorePrintln("Turn on LED");
+			switch (cmd->type) {
+
+				case EMBER_INCOMING_UNICAST:
+					if(localEndpoint == 1){
+						turnOnLed(LED1, ledBlue);
+						SEND_OnOffStateReport(localEndpoint, LED_ON);
+					}
+					if(localEndpoint == 2){
+						turnOnLed(LED2, ledBlue);
+						SEND_OnOffStateReport(localEndpoint, LED_ON);
+					}
+					break;
+
+				case EMBER_INCOMING_MULTICAST:
+					emberAfCorePrintln("Multicast");
+					turnOnLed(LED2, ledGreen);
+					break;
+
+				default:
+					break;
+			}
+			break;
+
+		default:
+			break;
 		}
-		break;
-	default:
-		break;
-	}
 	return false;
 }
 

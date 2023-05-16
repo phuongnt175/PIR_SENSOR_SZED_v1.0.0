@@ -25,26 +25,18 @@ void PIR_Init(pirControl PirHandler)
 {
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	GPIOINT_Init();
-	GPIO_PinModeSet(PIR_PORT,
-					PIR_PIN,
-					gpioModeInput,
-					0);
-	// Register callbacks before setting up and enabling pin interrupt
-	GPIOINT_CallbackRegister(PIR_PIN,
-							PIR_INTSignalHandle);
+	GPIO_PinModeSet(PIR_PORT, PIR_PIN, gpioModeInput, 0); // Register callbacks before setting up and enabling pin interrupt
+	GPIOINT_CallbackRegister(PIR_PIN, PIR_INTSignalHandle);
 	PIR_Enable(true);
 	PirCallbackFunc = PirHandler;
 }
 
 void PIR_Enable(boolean enable)
 {
-	if(enable)
-	{
+	if(enable){
 		GPIO_ExtIntConfig(PIR_PORT, PIR_PIN, PIR_PIN,
 						true, false, true);
-	}
-	else
-	{
+	}else {
 		GPIO_ExtIntConfig(PIR_PORT, PIR_PIN, PIR_PIN,
 							false, false, false);
 	}
@@ -55,15 +47,13 @@ void PIR_INTSignalHandle(uint8_t pin)
 {
 	emberAfCorePrintln("PIR_INTSignalHandle");
 	status = true;
-	if(pin != PIR_PIN)
-	{
+	if(pin != PIR_PIN){
 		return;
 	}
-	if(isMotionSignal())
-	{
+
+	if(isMotionSignal()){
 		pirState = PIR_STATE_DEBOUNCE;
 		PIR_Enable(false);
-
 		emberEventControlSetInactive(pirDetectEventControl);
 		emberEventControlSetDelayMS(pirDetectEventControl, 200);
 	}
@@ -74,6 +64,7 @@ void pirDetectEventHandler(void)
 	emberEventControlSetInactive(pirDetectEventControl);
 
 	switch(pirState){
+
 		case PIR_STATE_DEBOUNCE:
 			if(isMotionSignal()){
 				emberAfCorePrintln("PIR_DeTECT_MOTION");
@@ -95,6 +86,7 @@ void pirDetectEventHandler(void)
 				emberEventControlSetDelayMS(pirDetectEventControl, 30000);
 			}
 			break;
+
 		case PIR_STATE_WAIT_30S:
 			{
 				if(PirCallbackFunc != NULL){
@@ -112,13 +104,12 @@ void pirDetectEventHandler(void)
 bool isMotionSignal(void)
 {
 	bool isMotion;
-	if(status == true)
-	{
+
+	if(status == true){
 		isMotion = true;
-	}
-	else
-	{
+	}else {
 		isMotion = false;
 	}
+
 	return isMotion;
 }
