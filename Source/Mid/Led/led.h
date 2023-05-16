@@ -28,9 +28,9 @@
 #define LED_RGB_1                       { { LED_PORT_1, LED_RED_PIN_1 }, { LED_PORT_1, LED_GREEN_PIN_1 }, { LED_PORT_1, LED_BLUE_PIN_1 } }
 #define LED_RGB_2                       { { LED_PORT_2, LED_RED_PIN_2 }, { LED_PORT_2, LED_GREEN_PIN_2 }, { LED_PORT_2, LED_BLUE_PIN_2 } }
 
-#define TIMER_DIM_INIT                                                           \
-{                                                                                   \
-    false,                 /* Enable timer when initialization completes. */           \
+#define TIMER_DIM_INIT                                                           	  \
+{                                                                                     \
+    false,                 /* Enable timer when initialization completes. */          \
     false,                /* Stop counter during debug halt. */                       \
     timerPrescale1,       /* No prescaling. */                                        \
     timerClkSelHFPerClk,  /* Select HFPER / HFPERB clock. */                          \
