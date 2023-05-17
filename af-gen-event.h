@@ -89,10 +89,10 @@
   "Scan Dispatch Plugin Scan",  \
   "Update TC Link Key Plugin BeginTcLinkKeyUpdate",  \
   "Finding and binding event control",  \
-  "Event data",  \
-  "Event data",  \
-  "Event data",  \
-  "Event data",  \
+  "Join network event control",  \
+  "Led1 toggle event control",  \
+  "Led2 toggle event control",  \
+  "Main state event control",  \
   "Pir detect event control",  \
   "End Device Support Plugin Move NWK 0", \
   "End Device Support Plugin Polling NWK 0", \

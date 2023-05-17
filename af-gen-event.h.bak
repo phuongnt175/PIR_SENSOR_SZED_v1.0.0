@@ -18,6 +18,7 @@
   extern EmberEventControl emberAfPluginScanDispatchScanEventControl; \
   extern EmberEventControl emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventControl; \
   extern EmberEventControl findingAndBindingEventControl; \
+  extern EmberEventControl joinNetworkEventControl; \
   extern EmberEventControl led1ToggleEventControl; \
   extern EmberEventControl led2ToggleEventControl; \
   extern EmberEventControl mainStateEventControl; \
@@ -30,6 +31,7 @@
   extern void emberAfPluginScanDispatchScanEventHandler(void); \
   extern void emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventHandler(void); \
   extern void findingAndBindingEventHandler(void); \
+  extern void joinNetworkEventHandler(void); \
   extern void led1ToggleEventHandle(void); \
   extern void led2ToggleEventHandle(void); \
   extern void mainStateEventHandler(void); \
@@ -68,6 +70,7 @@
   { &emberAfPluginScanDispatchScanEventControl, emberAfPluginScanDispatchScanEventHandler }, \
   { &emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventControl, emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventHandler }, \
   { &findingAndBindingEventControl, findingAndBindingEventHandler }, \
+  { &joinNetworkEventControl, joinNetworkEventHandler }, \
   { &led1ToggleEventControl, led1ToggleEventHandle }, \
   { &led2ToggleEventControl, led2ToggleEventHandle }, \
   { &mainStateEventControl, mainStateEventHandler }, \
@@ -86,6 +89,7 @@
   "Scan Dispatch Plugin Scan",  \
   "Update TC Link Key Plugin BeginTcLinkKeyUpdate",  \
   "Finding and binding event control",  \
+  "Event data",  \
   "Event data",  \
   "Event data",  \
   "Event data",  \
