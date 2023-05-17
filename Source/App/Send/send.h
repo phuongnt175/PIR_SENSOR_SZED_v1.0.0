@@ -20,7 +20,7 @@ void sendCommandUnicast(uint8_t bySource,
 						uint8_t byAddress);
 void sendZigDevRequest(void);
 void sendOnOffStateReport(uint8_t byEndpoint, uint8_t byValue);
-void sendPIRStateReport(uint8_t byEndpoint, uint8_t byValue);
+void sendPirStateReport(uint8_t byEndpoint, uint8_t byValue);
 void sendReportInfoHc(void);
 
 #endif /* SOURCE_APP_SEND_SEND_H_ */

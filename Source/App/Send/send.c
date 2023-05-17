@@ -161,12 +161,12 @@ void sendOnOffStateReport(uint8_t byEndpoint, uint8_t byValue){
 }
 
 /**
- * @func    SEND_PIRStateReport
+ * @func    sendPirStateReport
  * @brief   Send PIR State
  * @param   byEndpoint, byValue
  * @retval  None
  */
-void sendPIRStateReport(uint8_t byEndpoint, uint8_t byValue){
+void sendPirStateReport(uint8_t byEndpoint, uint8_t byValue){
 	sendFillBufferGlobalCommand(ZCL_IAS_ZONE_CLUSTER_ID,
 								ZCL_ZONE_STATUS_ATTRIBUTE_ID,
 								ZCL_READ_ATTRIBUTES_RESPONSE_COMMAND_ID,

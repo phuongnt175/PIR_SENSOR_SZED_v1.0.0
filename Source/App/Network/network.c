@@ -30,7 +30,7 @@
 
 EmberEventControl joinNetworkEventControl;
 uint32_t g_timeFindAndJoin = 0;
-networkEventHandler networkEventHandle = NULL;
+networkEventHandler g_pNetworkEventHandle = NULL;
 
 /******************************************************************************/
 /*                              EXPORTED DATA                                 */
@@ -51,9 +51,9 @@ networkEventHandler networkEventHandle = NULL;
  * @parameter			: networkEventHandler
  * @return value		: None
  */
-void networkInit(networkEventHandler networkResult)
+void networkInit(networkEventHandler pNetworkResult)
 {
-	networkEventHandle = networkResult;
+	g_pNetworkEventHandle = pNetworkResult;
 }
 
 /*
@@ -112,31 +112,31 @@ boolean emberAfStackStatusCallback(EmberStatus status){
 	if(status == EMBER_NETWORK_UP){
 		if(g_timeFindAndJoin>0){ // vao mang thanh cong
 			networkStopFindAndJoin();
-			if(networkEventHandle != NULL){
-				networkEventHandle(NETWORK_JOIN_SUCCESS);
+			if(g_pNetworkEventHandle != NULL){
+				g_pNetworkEventHandle(NETWORK_JOIN_SUCCESS);
 				emberAfCorePrintln("NETWORK_JOIN_SUCCESS");
 			}
 		}else {
-			if(networkEventHandle != NULL){
-				networkEventHandle(NETWORK_HAS_PARENT);
+			if(g_pNetworkEventHandle != NULL){
+				g_pNetworkEventHandle(NETWORK_HAS_PARENT);
 				emberAfCorePrintln("NETWORK_HAS_PARENT");
 			}
 		}
 	}else {
 		EmberNetworkStatus nwkStatusCurrent = emberAfNetworkState();
 		if(nwkStatusCurrent == EMBER_NO_NETWORK){
-			if(networkEventHandle != NULL){
-				networkEventHandle(NETWORK_OUT_NETWORK);
+			if(g_pNetworkEventHandle != NULL){
+				g_pNetworkEventHandle(NETWORK_OUT_NETWORK);
 				emberAfCorePrintln("NETWORK_OUT_NETWORK");
 			}
 		}else if(nwkStatusCurrent == EMBER_JOINED_NETWORK_NO_PARENT){
 			emberAfCorePrintln("NETWORK_LOST_PARENT");
-			networkEventHandle(NETWORK_LOST_PARENT);
+			g_pNetworkEventHandle(NETWORK_LOST_PARENT);
 		}
 	}
 	if(status == EMBER_JOIN_FAILED){
 		emberAfCorePrintln("NETWORK_JOIN_FAIL");
-		networkEventHandle(NETWORK_JOIN_FAIL);
+		g_pNetworkEventHandle(NETWORK_JOIN_FAIL);
 	}
 
 	return false;

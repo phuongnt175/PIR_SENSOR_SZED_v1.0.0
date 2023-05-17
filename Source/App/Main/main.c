@@ -48,7 +48,7 @@ EmberEventControl mainStateEventControl;
 /******************************************************************************/
 
 void mainNetworkEventHandler(uint8_t byNetworkResult);
-void mainPIREventHandler(uint8_t byPirAction);
+void mainPirEventHandler(uint8_t byPirAction);
 
 /******************************************************************************/
 /*                            EXPORTED FUNCTIONS                              */
@@ -61,11 +61,9 @@ void emberAfMainInitCallback(void)
 	emberAfCorePrintln("Main Init");
 	ledInit();
 	networkInit(mainNetworkEventHandler);
-	pirInit(mainPIREventHandler);
+	pirInit(mainPirEventHandler);
 	emberEventControlSetActive(mainStateEventControl);
 }
-
-
 /****************************EVENT HANDLER MIDDER********************************************************************/
 /*
  * @func	mainPIREventHandler
@@ -73,7 +71,7 @@ void emberAfMainInitCallback(void)
  * @param	pirAction
  * @retval	None
  */
-void mainPIREventHandler(uint8_t byPirAction)
+void mainPirEventHandler(uint8_t byPirAction)
 {
 	static boolean boSendFlag = true;
 	switch (byPirAction) {
@@ -81,7 +79,7 @@ void mainPIREventHandler(uint8_t byPirAction)
 		case PIR_MOTION:
 			if(boSendFlag){
 				boSendFlag = false;
-				sendPIRStateReport(2,PIR_MOTION);
+				sendPirStateReport(2,PIR_MOTION);
 			}
 			toggleLed(LED1,ledPink,1,150,150);
 			break;
@@ -90,7 +88,7 @@ void mainPIREventHandler(uint8_t byPirAction)
 			boSendFlag = true;
 			toggleLed(LED1,ledRed,1,150,150);
 			emberAfCorePrintln("PIR_UNMOTION");
-			sendPIRStateReport(2,PIR_UNMOTION);
+			sendPirStateReport(2,PIR_UNMOTION);
 			break;
 
 		default:
@@ -107,12 +105,12 @@ void mainPIREventHandler(uint8_t byPirAction)
 void mainStateEventHandler(void)
 {
 	emberEventControlSetInactive(mainStateEventControl);
-	EmberNetworkStatus nwkStatusCurrent;
+	EmberNetworkStatus byNwkStatusCurrent;
 	switch (g_systemState) {
 
 		case POWER_ON_STATE:
-			nwkStatusCurrent = emberAfNetworkState();
-			if(nwkStatusCurrent == EMBER_NO_NETWORK){
+			byNwkStatusCurrent = emberAfNetworkState();
+			if(byNwkStatusCurrent == EMBER_NO_NETWORK){
 				toggleLed(LED1,ledRed,3,200,200);
 				networkFindAndJoin();
 			}
@@ -129,8 +127,8 @@ void mainStateEventHandler(void)
 
 		case REBOOT_STATE:
 			g_systemState = IDLE_STATE;
-			EmberNetworkStatus networkStatus = emberAfNetworkState();
-			if (networkStatus != EMBER_NO_NETWORK) {
+			EmberNetworkStatus byNetworkStatus = emberAfNetworkState();
+			if (byNetworkStatus != EMBER_NO_NETWORK) {
 				sendZigDevRequest();
 				emberClearBindingTable();
 				emberLeaveNetwork();
@@ -142,7 +140,6 @@ void mainStateEventHandler(void)
 		default:
 			break;
 	}
-
 }
 
 /*
