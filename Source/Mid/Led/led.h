@@ -47,7 +47,7 @@
 typedef enum{
 	LED1,
 	LED2
-}ledNumber_e;
+}LedNumber_e;
 typedef enum
 {
 	ledOff 				= 0x000,
@@ -57,7 +57,7 @@ typedef enum
 	ledPink				= ledRed  | ledBlue,
 	ledyellow			= ledGreen| ledRed,
 	ledRGB				= ledRed  | ledGreen | ledBlue
-}ledColor_e;
+}LedColor_e;
 
 typedef enum
 {
@@ -65,7 +65,7 @@ typedef enum
 	green,
 	blue,
 	off
-}ledState_e;
+}LedState_e;
 
 enum{
 	LED_FREE,
@@ -73,10 +73,11 @@ enum{
 };
 
 /* Function prototypes -----------------------------------------------*/
+
 void ledInit(void);
-void turnOffRGBLed(ledNumber_e index);
-void toggleLedHandle(ledNumber_e ledIndex);
-void toggleLed(ledNumber_e ledIndex, ledColor_e color, uint8_t toggleTime, uint32_t onTimeMs, uint32_t offTimeMs);
-void turnOnLed(ledNumber_e index, ledColor_e color);
+void turnOffRGBLed(LedNumber_e index);
+void toggleLedHandle(LedNumber_e ledIndex);
+void toggleLed(LedNumber_e ledIndex, LedColor_e color, uint8_t byToggleTime, uint32_t byOnTimeMs, uint32_t byOffTimeMs);
+void turnOnLed(LedNumber_e index, LedColor_e color);
 
 #endif /* SOURCE_MID_LED_LED_H_ */

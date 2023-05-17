@@ -1,32 +1,67 @@
-/*
- * receive.c
+ /* File name: reiceive.c
  *
- *  Created on: Mar 30, 2023
- *      Author: admin1
- */
+ * Description:
+ *
+ *
+ * Last Changed By:  $Author: $
+ * Revision:         $Revision: $
+ * Last Changed:     $Date: $May 17, 2023
+ *
+ * Code sample:
+ ******************************************************************************/
+/******************************************************************************/
+/*                              INCLUDE FILES                                 */
+/******************************************************************************/
 
 #include "app/framework/include/af.h"
 #include "Source/Mid/Led/led.h"
 #include "Source/App/Send/send.h"
 #include "receive.h"
 
+/******************************************************************************/
+/*                     PRIVATE TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/*                     EXPORTED TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/*                              PRIVATE DATA                                  */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                              EXPORTED DATA                                 */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            PRIVATE FUNCTIONS                               */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            EXPORTED FUNCTIONS                              */
+/******************************************************************************/
+
+/******************************************************************************/
 /**
  * @func    emberAfPreCommandReceivedCallback
  * @brief   Process Command Received
  * @param   EmberAfClusterCommand
  * @retval  boolean
  */
-boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd)
+boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* pCmd)
 {
-	if(cmd->clusterSpecific){
-		switch(cmd->apsFrame->clusterId)
+	if(pCmd->clusterSpecific){
+		switch(pCmd->apsFrame->clusterId)
 		{
 			case ZCL_ON_OFF_CLUSTER_ID:
-				RECEIVE_HandleOnOffCluster(cmd);
+				receiveHandleOnOffCluster(pCmd);
 				break;
 
 			case ZCL_LEVEL_CONTROL_CLUSTER_ID:
-//				RECEIVE_HandleLevelControlCluster(cmd);
+//				RECEIVE_HandleLevelControlCluster(pCmd);
 				break;
 
 			default:
@@ -37,54 +72,52 @@ boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd)
 	return false;
 }
 
-
 /**
  * @func    emberAfPreMessageReceivedCallback
  * @brief   Process Pre message received
  * @param   EmberAfIncomingMessage
  * @retval  None
  */
-boolean emberAfPreMessageReceivedCallback(EmberAfIncomingMessage* incommingMessage)
+boolean emberAfPreMessageReceivedCallback(EmberAfIncomingMessage* pIncommingMessage)
 {
-	if(incommingMessage->apsFrame->clusterId == ACTIVE_ENDPOINTS_RESPONSE){
+	if(pIncommingMessage->apsFrame->clusterId == ACTIVE_ENDPOINTS_RESPONSE){
 		return true;
 	}
 
  return false;
 }
 
-
 /**
- * @func    RECEIVE_HandleOnOffCluster
+ * @func    receiveHandleOnOffCluster
  * @brief   Handler On/Off command
  * @param   EmberAfClusterCommand
  * @retval  bool
  */
-bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd)
+bool receiveHandleOnOffCluster(EmberAfClusterCommand* pCmd)
 {
-	uint8_t commandID = cmd->commandId;
-	uint8_t localEndpoint = cmd ->apsFrame -> destinationEndpoint;
-	uint8_t remoteEndpoint = cmd->apsFrame -> sourceEndpoint;
-	uint16_t IgnoreNodeID = cmd->source;
+	uint8_t commandID = pCmd->commandId;
+	uint8_t localEndpoint = pCmd ->apsFrame -> destinationEndpoint;
+	uint8_t remoteEndpoint = pCmd->apsFrame -> sourceEndpoint;
+	uint16_t IgnoreNodeID = pCmd->source;
 /************************************ON-OFF LED******************************************************************************************/
-	emberAfCorePrintln("RECEIVE_HandleOnOffCluster SourceEndpoint = %d, RemoteEndpoint = %d, commandID = %d, nodeID %2X\n",remoteEndpoint,localEndpoint,commandID,IgnoreNodeID);
+	emberAfCorePrintln("receiveHandleOnOffCluster SourceEndpoint = %d, RemoteEndpoint = %d, commandID = %d, nodeID %2X\n",remoteEndpoint,localEndpoint,commandID,IgnoreNodeID);
 	switch(commandID)
 	{
 		case ZCL_OFF_COMMAND_ID:
 			emberAfCorePrintln("Turn off LED");
 
-			switch (cmd->type) {
+			switch (pCmd->type) {
 
 				case EMBER_INCOMING_UNICAST:
 					if(localEndpoint == 1)
 					{
-					turnOffRGBLed(LED1);
-					SEND_OnOffStateReport(localEndpoint, LED_OFF);
+						turnOffRGBLed(LED1);
+						sendOnOffStateReport(localEndpoint, LED_OFF);
 					}
 					if(localEndpoint == 2)
 					{
 						turnOffRGBLed(LED2);
-						SEND_OnOffStateReport(localEndpoint, LED_OFF);
+						sendOnOffStateReport(localEndpoint, LED_OFF);
 					}
 					break;
 
@@ -102,16 +135,16 @@ bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd)
 		case ZCL_ON_COMMAND_ID:
 
 			emberAfCorePrintln("Turn on LED");
-			switch (cmd->type) {
+			switch (pCmd->type) {
 
 				case EMBER_INCOMING_UNICAST:
 					if(localEndpoint == 1){
 						turnOnLed(LED1, ledBlue);
-						SEND_OnOffStateReport(localEndpoint, LED_ON);
+						sendOnOffStateReport(localEndpoint, LED_ON);
 					}
 					if(localEndpoint == 2){
 						turnOnLed(LED2, ledBlue);
-						SEND_OnOffStateReport(localEndpoint, LED_ON);
+						sendOnOffStateReport(localEndpoint, LED_ON);
 					}
 					break;
 

@@ -1,35 +1,68 @@
-/*
- * network.c
+ /* File name: network.c
  *
- *  Created on: Mar 30, 2023
- *      Author: admin1
- */
+ * Description:
+ *
+ *
+ * Last Changed By:  $Author: $
+ * Revision:         $Revision: $
+ * Last Changed:     $Date: $May 17, 2023
+ *
+ * Code sample:
+ ******************************************************************************/
+/******************************************************************************/
+/*                              INCLUDE FILES                                 */
+/******************************************************************************/
+
 #include "app/framework/include/af.h"
 #include "network.h"
 
+/******************************************************************************/
+/*                     PRIVATE TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                     EXPORTED TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                              PRIVATE DATA                                  */
+/******************************************************************************/
+
 EmberEventControl joinNetworkEventControl;
-uint32_t timeFindAndJoin = 0;
+uint32_t g_timeFindAndJoin = 0;
 networkEventHandler networkEventHandle = NULL;
 
+/******************************************************************************/
+/*                              EXPORTED DATA                                 */
+/******************************************************************************/
 
+/******************************************************************************/
+/*                            PRIVATE FUNCTIONS                               */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            EXPORTED FUNCTIONS                              */
+/******************************************************************************/
+
+/******************************************************************************/
 /*
  * @function 			: Network_Init
  * @brief				: Handle event network.
  * @parameter			: networkEventHandler
  * @return value		: None
  */
-void Network_Init(networkEventHandler networkResult)
+void networkInit(networkEventHandler networkResult)
 {
 	networkEventHandle = networkResult;
 }
 
 /*
- * @function 			: NETWORK_FindAndJoin
+ * @function 			: networkFindAndJoin
  * @brief				: Find network
  * @parameter			: None
  * @return value		: None
  */
-void NETWORK_FindAndJoin(void)
+void networkFindAndJoin(void)
 {
 	if(emberAfNetworkState() == EMBER_NO_NETWORK)
 	{
@@ -39,12 +72,12 @@ void NETWORK_FindAndJoin(void)
 
 
 /*
- * @function 			: NETWORK_StopFindAndJoin
+ * @function 			: networkStopFindAndJoin
  * @brief				: Stop find network
  * @parameter			: None
  * @return value		: None
  */
-void NETWORK_StopFindAndJoin(void)
+void networkStopFindAndJoin(void)
 {
 	emberAfPluginNetworkSteeringStop();
 }
@@ -63,7 +96,7 @@ void joinNetworkEventHandler(void)
 	if(emberAfNetworkState() == EMBER_NO_NETWORK)
 	{
 		emberAfPluginNetworkSteeringStart();
-		timeFindAndJoin++;
+		g_timeFindAndJoin++;
 	}
 }
 
@@ -77,8 +110,8 @@ void joinNetworkEventHandler(void)
 boolean emberAfStackStatusCallback(EmberStatus status){
 	emberAfCorePrintln("emberAfStackStatusCallback\n");
 	if(status == EMBER_NETWORK_UP){
-		if(timeFindAndJoin>0){ // vao mang thanh cong
-			NETWORK_StopFindAndJoin();
+		if(g_timeFindAndJoin>0){ // vao mang thanh cong
+			networkStopFindAndJoin();
 			if(networkEventHandle != NULL){
 				networkEventHandle(NETWORK_JOIN_SUCCESS);
 				emberAfCorePrintln("NETWORK_JOIN_SUCCESS");

@@ -1,51 +1,83 @@
-/*
- * pir.c
+ /* File name: pir.c
  *
- *  Created on: Apr 3, 2023
- *      Author: admin1
- */
+ * Description:
+ *
+ *
+ * Last Changed By:  $Author: $
+ * Revision:         $Revision: $
+ * Last Changed:     $Date: $May 17, 2023
+ *
+ * Code sample:
+ ******************************************************************************/
+/******************************************************************************/
+/*                              INCLUDE FILES                                 */
+/******************************************************************************/
 
 #include "app/framework/include/af.h"
-#include "pir.h"
 #include "gpiointerrupt.h"
 #include "stddef.h"
 #include "em_cmu.h"
 #include "em_gpio.h"
+#include "pir.h"
 
+/******************************************************************************/
+/*                     PRIVATE TYPES and DEFINITIONS                         */
+/******************************************************************************/
 
-pirControl PirCallbackFunc = NULL;
-pirActtionHandler_e pirState;
+/******************************************************************************/
+/*                     EXPORTED TYPES and DEFINITIONS                         */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                              PRIVATE DATA                                  */
+/******************************************************************************/
+
+pirControl pirCallbackFunc = NULL;
+PirActtionHandler_e pirState;
 EmberEventControl pirDetectEventControl;
-bool status = false;
+bool g_status = false;
 
-void PIR_INTSignalHandle(uint8_t pin);
+/******************************************************************************/
+/*                              EXPORTED DATA                                 */
+/******************************************************************************/
+
+/******************************************************************************/
+/*                            PRIVATE FUNCTIONS                               */
+/******************************************************************************/
+
+void pirINTSignalHandle(uint8_t byPin);
 bool isMotionSignal(void);
 
+/******************************************************************************/
+/*                            EXPORTED FUNCTIONS                              */
+/******************************************************************************/
+
+/******************************************************************************/
 /**
  * @func		PIR_Init
  * @brief		PIR init
  * @param		pirControl
  * @retval		None
  */
-void PIR_Init(pirControl PirHandler)
+void pirInit(pirControl pirHandler)
 {
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	GPIOINT_Init();
 	GPIO_PinModeSet(PIR_PORT, PIR_PIN, gpioModeInput, 0); // Register callbacks before setting up and enabling pin interrupt
-	GPIOINT_CallbackRegister(PIR_PIN, PIR_INTSignalHandle);
-	PIR_Enable(true);
-	PirCallbackFunc = PirHandler;
+	GPIOINT_CallbackRegister(PIR_PIN, pirINTSignalHandle);
+	pirEnable(true);
+	pirCallbackFunc = pirHandler;
 }
 
 /**
- * @func		PIR_Enable
+ * @func		pirEnable
  * @brief		PIR Enable
  * @param		boolean
  * @retval		None
  */
-void PIR_Enable(boolean enable)
+void pirEnable(boolean boEnable)
 {
-	if(enable){
+	if(boEnable){
 		GPIO_ExtIntConfig(PIR_PORT, PIR_PIN, PIR_PIN,
 						true, false, true);
 	}else {
@@ -60,17 +92,17 @@ void PIR_Enable(boolean enable)
  * @param		uint8_t
  * @retval		None
  */
-void PIR_INTSignalHandle(uint8_t pin)
+void pirINTSignalHandle(uint8_t byPin)
 {
 	emberAfCorePrintln("PIR_INTSignalHandle");
-	status = true;
-	if(pin != PIR_PIN){
+	g_status = true;
+	if(byPin != PIR_PIN){
 		return;
 	}
 
 	if(isMotionSignal()){
 		pirState = PIR_STATE_DEBOUNCE;
-		PIR_Enable(false);
+		pirEnable(false);
 		emberEventControlSetInactive(pirDetectEventControl);
 		emberEventControlSetDelayMS(pirDetectEventControl, 200);
 	}
@@ -92,29 +124,29 @@ void pirDetectEventHandler(void)
 			if(isMotionSignal()){
 				emberAfCorePrintln("PIR_DeTECT_MOTION");
 				pirState = PIR_STATE_WAIT_5S;
-				if(PirCallbackFunc != NULL){
-					PirCallbackFunc(PIR_MOTION);
+				if(pirCallbackFunc != NULL){
+					pirCallbackFunc(PIR_MOTION);
 				}
 				emberEventControlSetDelayMS(pirDetectEventControl,5000);
 			}else {
-				PIR_Enable(true);
+				pirEnable(true);
 			}
 			break;
 
 		case PIR_STATE_WAIT_5S:
 			{
-				status = false;
+				g_status = false;
 				pirState = PIR_STATE_WAIT_30S;
-				PIR_Enable(true);
+				pirEnable(true);
 				emberEventControlSetDelayMS(pirDetectEventControl, 30000);
 			}
 			break;
 
 		case PIR_STATE_WAIT_30S:
 			{
-				if(PirCallbackFunc != NULL){
+				if(pirCallbackFunc != NULL){
 					emberAfCorePrintln("PIR_DETECT_UNMOTION");
-					PirCallbackFunc(PIR_UNMOTION);
+					pirCallbackFunc(PIR_UNMOTION);
 				}
 			}
 			break;
@@ -134,7 +166,7 @@ bool isMotionSignal(void)
 {
 	bool isMotion;
 
-	if(status == true){
+	if(g_status == true){
 		isMotion = true;
 	}else {
 		isMotion = false;

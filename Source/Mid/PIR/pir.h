@@ -18,11 +18,11 @@ typedef enum
 	PIR_STATE_DEBOUNCE,
 	PIR_STATE_WAIT_5S,
 	PIR_STATE_WAIT_30S
-}pirActtionHandler_e;
+}PirActtionHandler_e;
 
-typedef void(*pirControl)(pirActtionHandler_e pirEvent);
+typedef void(*pirControl)(PirActtionHandler_e pirEvent);
 
-void PIR_Init(pirControl PirHandler);
-void PIR_Enable(boolean enable);
+void pirInit(pirControl pirHandler);
+void pirEnable(boolean boEnable);
 
 #endif /* SOURCE_MID_PIR_PIR_H_ */

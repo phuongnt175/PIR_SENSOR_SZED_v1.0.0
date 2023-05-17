@@ -12,7 +12,7 @@
 #define LED_ON								1
 
 /* Function prototypes -----------------------------------------------*/
-boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* cmd);
-bool RECEIVE_HandleOnOffCluster(EmberAfClusterCommand* cmd);
+boolean emberAfPreCommandReceivedCallback(EmberAfClusterCommand* pCmd);
+bool receiveHandleOnOffCluster(EmberAfClusterCommand* pCmd);
 
 #endif /* SOURCE_APP_RECEIVE_RECEIVE_H_ */

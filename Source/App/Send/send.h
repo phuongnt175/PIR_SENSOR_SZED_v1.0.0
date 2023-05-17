@@ -15,13 +15,12 @@
 #define ZDO_MESSAGE_OVERHEAD 					1
 
 
-void SEND_SendCommandUnicast(uint8_t source,
-							 uint8_t destination,
-							 uint8_t address);
-void SendZigDevRequest(void);
-void SEND_OnOffStateReport(uint8_t Endpoint, uint8_t value);
-void SEND_PIRStateReport(uint8_t endpoint, uint8_t value);
-void SEND_ReportInfoHc(void);
-void SendZigDevRequest(void);
+void sendCommandUnicast(uint8_t bySource,
+						uint8_t byDestination,
+						uint8_t byAddress);
+void sendZigDevRequest(void);
+void sendOnOffStateReport(uint8_t byEndpoint, uint8_t byValue);
+void sendPIRStateReport(uint8_t byEndpoint, uint8_t byValue);
+void sendReportInfoHc(void);
 
 #endif /* SOURCE_APP_SEND_SEND_H_ */
