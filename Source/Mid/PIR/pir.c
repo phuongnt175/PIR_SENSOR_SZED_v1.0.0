@@ -45,7 +45,7 @@ bool g_status = false;
 /*                            PRIVATE FUNCTIONS                               */
 /******************************************************************************/
 
-void pirINTSignalHandle(uint8_t byPin);
+void pirIntSignalHandle(uint8_t byPin);
 bool isMotionSignal(void);
 
 /******************************************************************************/
@@ -64,7 +64,7 @@ void pirInit(pirControl pirHandler)
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	GPIOINT_Init();
 	GPIO_PinModeSet(PIR_PORT, PIR_PIN, gpioModeInput, 0); // Register callbacks before setting up and enabling pin interrupt
-	GPIOINT_CallbackRegister(PIR_PIN, pirINTSignalHandle);
+	GPIOINT_CallbackRegister(PIR_PIN, pirIntSignalHandle);
 	pirEnable(true);
 	pirCallbackFunc = pirHandler;
 }
@@ -92,7 +92,7 @@ void pirEnable(boolean boEnable)
  * @param		uint8_t
  * @retval		None
  */
-void pirINTSignalHandle(uint8_t byPin)
+void pirIntSignalHandle(uint8_t byPin)
 {
 	emberAfCorePrintln("PIR_INTSignalHandle");
 	g_status = true;
